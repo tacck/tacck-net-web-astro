@@ -1,0 +1,115 @@
+{
+  "$schema": "https://prosefly.dev/schema/lotus.json",
+  "name": "Lotus Starter",
+  "description": "Documentation built with Astro Theme Lotus.",
+  "favicon": "/favicon.svg",
+  "docsBase": "/",
+  "siteNav": [
+    {
+      "label": "Docs",
+      "href": "/overview/"
+    },
+    {
+      "label": "Theme",
+      "href": "https://astro-theme-lotus.prosefly.dev",
+      "external": true,
+      "trailingIcon": "lucide:arrow-up-right"
+    }
+  ],
+  "socials": [
+    {
+      "label": "GitHub",
+      "href": "https://github.com/prosefly/astro-template-lotus-starter",
+      "external": true,
+      "icon": "github"
+    }
+  ],
+  "search": {
+    "provider": "local"
+  },
+  "source": {
+    "github": "prosefly/astro-template-lotus-starter",
+    "branch": "main"
+  },
+  "editLink": true,
+  "docsNav": [
+    {
+      "label": "Start Here",
+      "icon": "lucide:rocket",
+      "items": [
+        "overview",
+        "installation",
+        "customization"
+      ]
+    },
+    {
+      "label": "Guides",
+      "icon": "lucide:book-open",
+      "items": [
+        {
+          "autogenerate": {
+            "directory": "guides"
+          }
+        }
+      ]
+    }
+  ],
+  "footer": {
+    "copyright": "Copyright © 2026 Prosefly.",
+    "sections": [
+      {
+        "title": "Project",
+        "links": [
+          {
+            "label": "Documentation",
+            "href": "https://astro-theme-lotus.prosefly.dev/docs/overview/"
+          },
+          {
+            "label": "Theme Source",
+            "href": "https://github.com/prosefly/astro-theme-lotus",
+            "external": true
+          },
+          {
+            "label": "Template Source",
+            "href": "https://github.com/prosefly/astro-template-lotus-starter",
+            "external": true
+          }
+        ]
+      },
+      {
+        "title": "Prosefly Projects",
+        "links": [
+          {
+            "label": "Astro Theme Lotus",
+            "href": "https://prosefly.dev/themes/lotus/"
+          },
+          {
+            "label": "Astro Theme Dahlia",
+            "href": "https://prosefly.dev/themes/dahlia/"
+          },
+          {
+            "label": "Astro Components",
+            "href": "https://prosefly.dev/docs/astro-components/"
+          }
+        ]
+      },
+      {
+        "title": "Community",
+        "links": [
+          {
+            "label": "GitHub",
+            "href": "https://github.com/prosefly"
+          },
+          {
+            "label": "X (Twitter)",
+            "href": "https://x.com/prosefly"
+          },
+          {
+            "label": "Sponsors",
+            "href": "https://prosefly.dev/sponsors/"
+          }
+        ]
+      }
+    ]
+  }
+}
