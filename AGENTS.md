@@ -24,8 +24,28 @@ Consult these guides before working on related tasks:
 ## 協調開発ルール（lockage）
 
 このリポジトリは複数の AI エージェントが同時に開発する。衝突を避けるため、
-`lockage` MCP サーバのツールで調整すること。あなたの `agent_id` は **`<AGENT_ID>`**。
-すべてのツール呼び出しでこの値を `agent_id` に渡す。
+`lockage` MCP サーバのツールで調整すること。
+
+### まず自分の名前を決める（起動直後に 1 回だけ）
+
+この `AGENTS.md` は全エージェントが読む共通ファイルなので、あなたの `agent_id` は
+ここには書かれていない。**起動直後に、自分で一意な `agent_id` を決めること**。
+以降のすべてのツール呼び出しで、その値を `agent_id` に渡す（セッション中は変えない）。
+
+1. 候補を作る: 自分の種別がわかる短い接頭辞に、衝突しにくい短い乱数を付ける。
+   例 `kiro-7f3a` / `claude-b912`。人間から起動時に名前を指定されていれば**それを使う**。
+2. 重複を確認する: `read_board(kind:"note")` で既に名乗っている相手を見て、さらに
+   `list_claims` と `list_worktrees` で現在 active な担当者（holder）も見る。**同じ
+   `agent_id` が既に使われていたら、別の乱数で作り直す**（同名が 2 人いると claim の
+   直列化・担当固定・handoff・起こし分けがすべて壊れる）。
+3. 確定したら名乗る: `post_board(agent_id, kind:"note", body:"<agent_id> 参加")` を
+   **1 回だけ**呼び、自分の存在を board に出す。以後この `agent_id` は変えない。
+
+> **調整役（オーケストレータ）の宛先について**: 「詰まったとき」の `question` を誰に出すかは
+> 運用で決まる。人間が起動時に調整役の `agent_id`（例 `orchestrator`）を伝えていれば、
+> 以下で `to_agent` にその値を渡す。**調整役がいない単独運用なら、`to_agent` を省略**して
+> 全体宛に出す（省略すると全員が受け取れる）。以下の手順で「調整役宛（いなければ `to_agent`
+> 省略）」と書いてある箇所は、この方針に従うこと。
 
 ### 作業を始めるとき（必ずこの順）
 
@@ -41,7 +61,7 @@ Consult these guides before working on related tasks:
      以降の編集・コミットはすべてこの worktree・このブランチ上で行う。
    - **自分でその worktree に移動（CWD 切り替え）できない場合**（起動時に作業ディレクトリを
      渡されていない・GUI で開き直せない等）は、**本流ツリーで作業を始めてはいけない**。
-     `post_board(agent_id, kind:"question", to_agent:"<ORCHESTRATOR_ID>", ref_task_id:<task_id>,
+     `post_board(agent_id, kind:"question", to_agent:"<調整役の agent_id／いなければこの引数ごと省略>", ref_task_id:<task_id>,
      body:"worktree <worktree_path>（ブランチ <branch>）に切り替えて作業を開始したいが、
      自分で移動できない。この worktree で開き直してほしい")` でユーザー（オーケストレータ）に
      依頼し、`wait_for_unblock` で待つ。本流を直接触る事故を防ぐため、切り替わるまで着手しない。
@@ -93,7 +113,7 @@ Consult these guides before working on related tasks:
      行う。PR のタイトル・本文・issue 番号の紐付けも publisher が付ける。
    - したがって**あなたは PR 作成を依頼する必要すらない**。例外は「この環境で
      `lockage-publish` が全く走っていない」と分かっている場合だけで、そのときのみ
-     `post_board(kind:"question", to_agent:"<ORCHESTRATOR_ID>", ref_task_id:<task_id>,
+     `post_board(kind:"question", to_agent:"<調整役の agent_id／いなければこの引数ごと省略>", ref_task_id:<task_id>,
      body:"issue #N の全タスク完了。lockage-publish の起動（PR 化）を依頼")` で調整役に起動を頼む。
 
 > **補足（現状の実装）**: `task_done` は worktree の成果を**ローカルで base ブランチへ直接マージ**し、
@@ -111,7 +131,7 @@ Consult these guides before working on related tasks:
 タスクは `open` に戻され、**あなたが詰まった理由も、途中まで進めた worktree の文脈も失われる**。
 必ず次の順で「詰まった事実を台帳に書いてから」終わること。
 
-1. **先に理由を残す**: `post_board(agent_id, kind:"question", to_agent:"<ORCHESTRATOR_ID>", ref_task_id:<task_id>, body:"詰まった理由（例: back の API キー権限が無い / レスポンス形式の設計判断が要る）")`。
+1. **先に理由を残す**: `post_board(agent_id, kind:"question", to_agent:"<調整役の agent_id／いなければこの引数ごと省略>", ref_task_id:<task_id>, body:"詰まった理由（例: back の API キー権限が無い / レスポンス形式の設計判断が要る）")`。
    必ず `block_task` より**先**に呼ぶ（次手で lease が止まるため、理由を書く前に死ぬと詰まり方が不明になる）。
 2. **タスクを中断状態にする**: `block_task(task_id, agent_id)`。これで `in_progress`→`blocked` になり、
    あなたの claim・worktree は**保持されたまま温存**される（lease sweep の対象外＝無期限保持。
@@ -140,7 +160,8 @@ Consult these guides before working on related tasks:
 
 ### 守ること（要点）
 
-- `agent_id` は常に `<AGENT_ID>`。他のエージェントの id を名乗らない。
+- `agent_id` は起動時に自分で決めた一意な値（例 `kiro-7f3a`）を常用する。
+  セッション中は変えない。他のエージェントの id を名乗らない。
 - claim できなかったタスクは奪わず、別のタスクへ。
 - 編集は必ず割り当てられた **worktree の中**で。本流ツリーを直接触らない。
   worktree に自分で移動できないときは、本流で始めず `post_board(kind:"question")` で
