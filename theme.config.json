@@ -28,7 +28,7 @@
     "provider": "local"
   },
   "source": {
-    "github": "prosefly/astro-template-lotus-starter",
+    "github": "tacck/tacck-net-web-astro",
     "branch": "main"
   },
   "editLink": true,

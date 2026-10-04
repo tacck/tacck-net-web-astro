@@ -5,3 +5,13 @@ node_modules/
 
 .DS_Store
 *.log
+
+# coord-dev (SQLite)
+.coord/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+
+# local MCP settings
+.mcp.json
+.kiro/settings/mcp.json
