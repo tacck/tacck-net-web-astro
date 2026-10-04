@@ -17,6 +17,30 @@
       "href": "https://github.com/tacck",
       "external": true,
       "icon": "github"
+    },
+    {
+      "label": "X (Twitter)",
+      "href": "https://x.com/tacck",
+      "external": true,
+      "icon": "x"
+    },
+    {
+      "label": "Facebook",
+      "href": "https://www.facebook.com/tacck",
+      "external": true,
+      "icon": "simple-icons:facebook"
+    },
+    {
+      "label": "Instagram",
+      "href": "https://www.instagram.com/tacck",
+      "external": true,
+      "icon": "simple-icons:instagram"
+    },
+    {
+      "label": "LinkedIn",
+      "href": "https://www.linkedin.com/in/tacck/",
+      "external": true,
+      "icon": "simple-icons:linkedin"
     }
   ],
   "search": {
