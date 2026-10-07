@@ -62,6 +62,16 @@
       "icon": "simple-icons:linkedin"
     }
   ],
+  "head": [
+    {
+      "tag": "script",
+      "attrs": {
+        "type": "module",
+        "src": "https://static.cloudflareinsights.com/beacon.min.js",
+        "data-cf-beacon": "{\"token\": \"9eb7c5860a8f43a8b1a53c87ec88b862\"}"
+      }
+    }
+  ],
   "search": {
     "provider": "local"
   },
