@@ -10,7 +10,26 @@
       "lang": "ja"
     }
   },
-  "siteNav": [],
+  "siteNav": [
+    {
+      "label": "About",
+      "href": "/about"
+    },
+    {
+      "label": "Works",
+      "href": "/works"
+    },
+    {
+      "label": "Meetups",
+      "href": "https://meetup.tacck.net/",
+      "external": true
+    },
+    {
+      "label": "Tech Blog",
+      "href": "https://blog.tacck.net",
+      "external": true
+    }
+  ],
   "socials": [
     {
       "label": "GitHub",
@@ -43,6 +62,16 @@
       "icon": "simple-icons:linkedin"
     }
   ],
+  "head": [
+    {
+      "tag": "script",
+      "attrs": {
+        "type": "module",
+        "src": "https://static.cloudflareinsights.com/beacon.min.js",
+        "data-cf-beacon": "{\"token\": \"9eb7c5860a8f43a8b1a53c87ec88b862\"}"
+      }
+    }
+  ],
   "search": {
     "provider": "local"
   },
@@ -54,6 +83,35 @@
   "docsNav": [],
   "footer": {
     "copyright": "Copyright © tacck.",
-    "sections": []
+    "sections": [
+      {
+        "title": "Site",
+        "links": [
+          {
+            "label": "About",
+            "href": "/about"
+          },
+          {
+            "label": "Works",
+            "href": "/works"
+          }
+        ]
+      },
+      {
+        "title": "Links",
+        "links": [
+          {
+            "label": "Meetups",
+            "href": "https://meetup.tacck.net/",
+            "external": true
+          },
+          {
+            "label": "Tech Blog",
+            "href": "https://blog.tacck.net",
+            "external": true
+          }
+        ]
+      }
+    ]
   }
 }
